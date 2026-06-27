@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RankPulse SEO Analyzer</title>
+    <meta name="description" content="RankPulse is a lightweight SEO analyzer that checks technical SEO, metadata, content quality, accessibility signals, and on-page optimization.">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="page-shell">
+
+    <nav class="navbar-custom">
+        <div>
+            <div class="brand">RankPulse</div>
+            <small>SEO Intelligence Dashboard</small>
+        </div>
+        <div class="nav-pill">Built by Kumari Vrishti</div>
+    </nav>
+
+    <section class="hero-section">
+        <div class="hero-grid">
+            <div class="hero-left">
+                <span class="eyebrow">Woorank-like SEO Analyzer</span>
+                <h1>Audit any website with a clean SEO scorecard.</h1>
+                <p>
+                    Analyze metadata, headings, links, technical SEO, content quality,
+                    accessibility signals, and improvement opportunities in one dashboard.
+                </p>
+
+                <div class="search-card">
+                    <input type="text" id="urlInput" placeholder="Enter website URL, e.g. https://example.com">
+                    <button onclick="startAnalysis()">Analyze Now</button>
+                </div>
+
+                <div id="loading" class="loading d-none">
+                    <div class="loader"></div>
+                    <span>Running SEO audit...</span>
+                </div>
+            </div>
+
+            <div class="hero-right">
+                <div class="glass-card">
+                    <p class="mini-title">Audit Coverage</p>
+                    <div class="coverage-item"><span></span> Technical SEO</div>
+                    <div class="coverage-item"><span></span> On-Page SEO</div>
+                    <div class="coverage-item"><span></span> Metadata & Social Tags</div>
+                    <div class="coverage-item"><span></span> Content Quality</div>
+                    <div class="coverage-item"><span></span> Accessibility Signals</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="resultSection" class="results-section d-none">
+
+        <div class="top-report">
+            <div class="score-panel">
+                <div class="score-ring">
+                    <span id="overallScore">0</span>
+                    <small>/100</small>
+                </div>
+                <h3 id="scoreLabel">SEO Score</h3>
+                <p id="verdictText">Website audit summary will appear here.</p>
+                <span id="scoreStatus" class="score-badge">Grade</span>
+            </div>
+
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <p>On-Page SEO</p>
+                    <h3 id="onPageScore">0/30</h3>
+                    <div class="progress"><div id="onPageBar" class="progress-bar"></div></div>
+                </div>
+
+                <div class="metric-card">
+                    <p>Technical SEO</p>
+                    <h3 id="technicalScore">0/25</h3>
+                    <div class="progress"><div id="technicalBar" class="progress-bar"></div></div>
+                </div>
+
+                <div class="metric-card">
+                    <p>Performance Basics</p>
+                    <h3 id="performanceScore">0/20</h3>
+                    <div class="progress"><div id="performanceBar" class="progress-bar"></div></div>
+                </div>
+
+                <div class="metric-card">
+                    <p>Content Quality</p>
+                    <h3 id="contentScore">0/15</h3>
+                    <div class="progress"><div id="contentBar" class="progress-bar"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="report-card">
+            <div class="section-heading">
+                <h2>Website Snapshot</h2>
+                <p>Key SEO signals extracted from the analyzed page.</p>
+            </div>
+            <div id="websiteDetails" class="detail-grid"></div>
+        </div>
+
+        <div class="report-card">
+            <div class="section-heading">
+                <h2>SEO Check Matrix</h2>
+                <p>Pass/fail audit checks grouped by SEO category.</p>
+            </div>
+            <div id="checkMatrix" class="check-grid"></div>
+        </div>
+
+        <div class="report-card">
+            <div class="section-heading">
+                <h2>Smart Fix Suggestions</h2>
+                <p>Actionable recommendations generated from audit results.</p>
+            </div>
+            <ul id="suggestionsList" class="suggestion-list"></ul>
+        </div>
+
+    </section>
+
+    <footer>
+        RankPulse SEO Analyzer • Python FastAPI + HTML CSS JavaScript • Developed by Kumari Vrishti
+    </footer>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
