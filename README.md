@@ -2,7 +2,7 @@
 
 ![Dashboard Screenshot](screenshots/dashboard.jpg)
 
-![Analysis Result Screenshot](screenshots/analysis-result.jpg)
+![Analysis Result Screenshot](screenshots/Analysis-result.jpg)
 
 RankPulse SEO Analyzer is a Woorank-like SEO analysis project built using Python FastAPI and a custom frontend dashboard. It analyzes a website URL and generates a structured SEO report covering on-page SEO, technical SEO, metadata, content quality, indexability, performance basics, accessibility signals, and improvement suggestions.
 
