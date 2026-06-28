@@ -10,7 +10,7 @@ The project uses custom-built logic, manual crawling, and open-source Python lib
 
 ## Live Links
 
-* Live Frontend URL: [Paste your Vercel URL here]
+* Live Frontend URL: https://rankpulse-seo-analyzer.vercel.app
 * Backend API URL: https://rankpulse-seo-backend.onrender.com
 * GitHub Repository: https://github.com/Vrishti-vibes/rankpulse-seo-analyzer
 
