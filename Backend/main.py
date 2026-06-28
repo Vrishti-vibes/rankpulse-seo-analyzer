@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import uuid
@@ -16,8 +16,10 @@ app.add_middleware(
 
 results_store = {}
 
+
 class AnalyzeRequest(BaseModel):
     url: str
+
 
 @app.get("/")
 def home():
@@ -27,16 +29,34 @@ def home():
         "developer": "Kumari Vrishti"
     }
 
-@app.post("/api/analyze")
-def analyze(request: AnalyzeRequest):
-    job_id = str(uuid.uuid4())
-    result = analyze_website(request.url)
+
+def run_analysis(job_id: str, url: str):
+    results_store[job_id] = {
+        "status": "processing",
+        "message": "SEO analysis is in progress"
+    }
+
+    result = analyze_website(url)
     results_store[job_id] = result
+
+
+@app.post("/api/analyze")
+def analyze(request: AnalyzeRequest, background_tasks: BackgroundTasks):
+    job_id = str(uuid.uuid4())
+
+    results_store[job_id] = {
+        "status": "queued",
+        "message": "Analysis request received"
+    }
+
+    background_tasks.add_task(run_analysis, job_id, request.url)
 
     return {
         "job_id": job_id,
-        "status": "completed"
+        "status": "queued",
+        "message": "Analysis started. Use GET /api/results/{job_id} to fetch results."
     }
+
 
 @app.get("/api/results/{job_id}")
 def get_results(job_id: str):

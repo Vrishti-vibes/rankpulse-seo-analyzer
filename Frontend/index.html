@@ -1,131 +1,181 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RankPulse SEO Analyzer</title>
-    <meta name="description" content="RankPulse is a lightweight SEO analyzer that checks technical SEO, metadata, content quality, accessibility signals, and on-page optimization.">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RankPulse SEO Analyzer</title>
+<style>
+*{box-sizing:border-box}
+:root{--bg:#07111f;--card:#fff;--text:#0f172a;--muted:#64748b;--blue:#2563eb;--cyan:#06b6d4;--green:#16a34a;--red:#ef4444}
+body{margin:0;font-family:Arial,sans-serif;background:radial-gradient(circle at top left,rgba(37,99,235,.35),transparent 35%),radial-gradient(circle at top right,rgba(6,182,212,.25),transparent 30%),var(--bg);color:white}
+body.light{--bg:#eef4ff;color:#0f172a}
+.app{width:min(1200px,92%);margin:auto}
+.nav{margin-top:22px;padding:18px 24px;border-radius:24px;background:rgba(255,255,255,.1);display:flex;justify-content:space-between;align-items:center;border:1px solid rgba(255,255,255,.18)}
+.nav h2{margin:0;font-size:30px}.nav p{margin:4px 0 0;color:#b6c7de}.btn{border:0;border-radius:14px;padding:13px 20px;font-weight:800;cursor:pointer;background:linear-gradient(135deg,var(--blue),var(--cyan));color:white}
+.hero{display:grid;grid-template-columns:1.4fr .7fr;gap:28px;margin:45px 0}
+.card{background:rgba(255,255,255,.96);color:var(--text);border-radius:32px;padding:42px;box-shadow:0 30px 80px rgba(0,0,0,.28)}
+.label{display:inline-block;background:#eff6ff;color:var(--blue);padding:8px 14px;border-radius:999px;font-weight:800}
+h1{font-size:clamp(38px,5vw,68px);line-height:1;margin:20px 0;font-weight:950;letter-spacing:-2px}
+.card p{color:var(--muted);font-size:18px;line-height:1.6}
+.search{display:flex;background:#f8fafc;border:1px solid #e2e8f0;border-radius:18px;padding:8px;margin-top:28px}
+.search input{flex:1;border:0;outline:0;background:transparent;padding:16px;font-size:16px}
+.side ul{list-style:none;padding:0}.side li{padding:15px 0;border-bottom:1px solid #e2e8f0;font-weight:750}.side li:before{content:"✓";color:var(--green);font-weight:900;margin-right:10px}
+.hidden{display:none!important}.loading{margin-top:18px;color:var(--blue);font-weight:800}
+.results{margin-bottom:50px}.score-area{display:grid;grid-template-columns:.8fr 1.4fr;gap:22px}
+.score{text-align:center}.circle{width:180px;height:180px;border-radius:50%;margin:auto;display:grid;place-items:center;background:radial-gradient(circle,#fff 58%,transparent 60%),conic-gradient(var(--blue) 0deg,var(--cyan) 280deg,#e5e7eb 280deg)}
+.circle span{font-size:64px;font-weight:950;color:var(--blue)}
+.metrics{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}.metric{background:white;color:var(--text);border-radius:24px;padding:24px;box-shadow:0 20px 55px rgba(0,0,0,.2)}
+.metric p{color:var(--muted);font-weight:800;margin:0}.metric h3{font-size:36px;color:var(--blue);margin:10px 0 0}
+.panel{background:white;color:var(--text);border-radius:28px;padding:30px;margin-top:24px;box-shadow:0 20px 55px rgba(0,0,0,.2)}
+.panel-head{display:flex;justify-content:space-between;align-items:center;gap:15px}.panel h2{margin:0;font-size:30px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:22px}.item{background:#f8fafc;border:1px solid #e2e8f0;border-radius:16px;padding:15px}.item strong{display:block;color:#334155;margin-bottom:6px}.item span{font-weight:800;word-break:break-word}
+.checks{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:22px}.check{display:flex;gap:12px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:16px;padding:15px}.icon{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;color:white;font-weight:900}.pass{background:var(--green)}.fail{background:var(--red)}
+.suggestions{list-style:none;padding:0}.suggestions li{background:#f8fafc;border-left:5px solid var(--blue);padding:16px;margin:10px 0;border-radius:14px;font-weight:700}
+footer{text-align:center;color:#b6c7de;padding:35px}
+@media(max-width:900px){.hero,.score-area,.metrics,.grid,.checks{grid-template-columns:1fr}.search,.nav,.panel-head{flex-direction:column}.card{padding:28px}}
+</style>
 </head>
+
 <body>
+<main class="app">
+<nav class="nav">
+  <div><h2>RankPulse</h2><p>Woorank-like SEO Intelligence Dashboard</p></div>
+  <button class="btn" id="themeBtn">Toggle Theme</button>
+</nav>
 
-<div class="page-shell">
+<section class="hero">
+  <div class="card">
+    <span class="label">Custom SEO Audit Engine</span>
+    <h1>Analyze any website with a smart SEO scorecard.</h1>
+    <p>Check metadata, headings, links, indexability, page size, response time, readability, keyword presence and technical SEO signals.</p>
+    <div class="search">
+      <input id="urlInput" placeholder="Enter website URL, e.g. https://example.com">
+      <button class="btn" id="analyzeBtn">Analyze Now</button>
+    </div>
+    <div id="loading" class="loading hidden">Running SEO audit...</div>
+  </div>
 
-    <nav class="navbar-custom">
-        <div>
-            <div class="brand">RankPulse</div>
-            <small>SEO Intelligence Dashboard</small>
-        </div>
-        <div class="nav-pill">Built by Kumari Vrishti</div>
-    </nav>
+  <div class="card side">
+    <h2>Audit Coverage</h2>
+    <ul>
+      <li>Technical SEO</li><li>On-Page SEO</li><li>Metadata & Social Tags</li>
+      <li>Indexability Checks</li><li>Content Quality</li><li>Performance Basics</li>
+    </ul>
+  </div>
+</section>
 
-    <section class="hero-section">
-        <div class="hero-grid">
-            <div class="hero-left">
-                <span class="eyebrow">Woorank-like SEO Analyzer</span>
-                <h1>Audit any website with a clean SEO scorecard.</h1>
-                <p>
-                    Analyze metadata, headings, links, technical SEO, content quality,
-                    accessibility signals, and improvement opportunities in one dashboard.
-                </p>
+<section id="results" class="results hidden">
+  <div class="score-area">
+    <div class="card score">
+      <div class="circle"><span id="overall">0</span></div>
+      <h2 id="grade">SEO Grade</h2>
+      <p id="verdict">Analysis summary will appear here.</p>
+    </div>
+    <div class="metrics">
+      <div class="metric"><p>On-Page SEO</p><h3 id="onpage">0/30</h3></div>
+      <div class="metric"><p>Technical SEO</p><h3 id="technical">0/25</h3></div>
+      <div class="metric"><p>Performance</p><h3 id="performance">0/20</h3></div>
+      <div class="metric"><p>Content Quality</p><h3 id="content">0/15</h3></div>
+      <div class="metric"><p>Metadata</p><h3 id="metadata">0/10</h3></div>
+    </div>
+  </div>
 
-                <div class="search-card">
-                    <input type="text" id="urlInput" placeholder="Enter website URL, e.g. https://example.com">
-                    <button onclick="startAnalysis()">Analyze Now</button>
-                </div>
+  <div class="panel">
+    <div class="panel-head"><h2>Website Snapshot</h2><button class="btn" id="downloadBtn">Download JSON</button></div>
+    <div id="details" class="grid"></div>
+  </div>
 
-                <div id="loading" class="loading d-none">
-                    <div class="loader"></div>
-                    <span>Running SEO audit...</span>
-                </div>
-            </div>
+  <div class="panel"><h2>SEO Check Matrix</h2><div id="checks" class="checks"></div></div>
+  <div class="panel"><h2>Smart Fix Suggestions</h2><ul id="suggestions" class="suggestions"></ul></div>
+  <div class="panel"><h2>Keyword Presence Analysis</h2><div id="keywords" class="grid"></div></div>
+</section>
 
-            <div class="hero-right">
-                <div class="glass-card">
-                    <p class="mini-title">Audit Coverage</p>
-                    <div class="coverage-item"><span></span> Technical SEO</div>
-                    <div class="coverage-item"><span></span> On-Page SEO</div>
-                    <div class="coverage-item"><span></span> Metadata & Social Tags</div>
-                    <div class="coverage-item"><span></span> Content Quality</div>
-                    <div class="coverage-item"><span></span> Accessibility Signals</div>
-                </div>
-            </div>
-        </div>
-    </section>
+<footer>Built by Kumari Vrishti • Python FastAPI • HTML CSS JavaScript • Custom SEO Analyzer</footer>
+</main>
 
-    <section id="resultSection" class="results-section d-none">
+<script>
+const API_BASE_URL = "http://127.0.0.1:8000";
+let latestReport = null;
 
-        <div class="top-report">
-            <div class="score-panel">
-                <div class="score-ring">
-                    <span id="overallScore">0</span>
-                    <small>/100</small>
-                </div>
-                <h3 id="scoreLabel">SEO Score</h3>
-                <p id="verdictText">Website audit summary will appear here.</p>
-                <span id="scoreStatus" class="score-badge">Grade</span>
-            </div>
+document.getElementById("themeBtn").addEventListener("click",()=>document.body.classList.toggle("light"));
+document.getElementById("analyzeBtn").addEventListener("click",startAnalysis);
+document.getElementById("downloadBtn").addEventListener("click",downloadReport);
 
-            <div class="metrics-grid">
-                <div class="metric-card">
-                    <p>On-Page SEO</p>
-                    <h3 id="onPageScore">0/30</h3>
-                    <div class="progress"><div id="onPageBar" class="progress-bar"></div></div>
-                </div>
+async function startAnalysis(){
+  const url=document.getElementById("urlInput").value.trim();
+  if(!url){alert("Please enter a website URL");return;}
+  document.getElementById("loading").classList.remove("hidden");
+  document.getElementById("results").classList.add("hidden");
 
-                <div class="metric-card">
-                    <p>Technical SEO</p>
-                    <h3 id="technicalScore">0/25</h3>
-                    <div class="progress"><div id="technicalBar" class="progress-bar"></div></div>
-                </div>
+  try{
+    const res=await fetch(`${API_BASE_URL}/api/analyze`,{
+      method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({url})
+    });
+    const data=await res.json();
+    let result=null;
+    for(let i=0;i<25;i++){
+      const r=await fetch(`${API_BASE_URL}/api/results/${data.job_id}`);
+      result=await r.json();
+      if(result.status==="completed"||result.status==="failed")break;
+      await new Promise(resolve=>setTimeout(resolve,1000));
+    }
+    latestReport=result;
+    show(result);
+  }catch(e){
+    alert("Backend server is not running or API URL is wrong.");
+    console.error(e);
+  }finally{
+    document.getElementById("loading").classList.add("hidden");
+  }
+}
 
-                <div class="metric-card">
-                    <p>Performance Basics</p>
-                    <h3 id="performanceScore">0/20</h3>
-                    <div class="progress"><div id="performanceBar" class="progress-bar"></div></div>
-                </div>
+function v(x){return x===true?"Yes":x===false?"No":(x??"Not found");}
 
-                <div class="metric-card">
-                    <p>Content Quality</p>
-                    <h3 id="contentScore">0/15</h3>
-                    <div class="progress"><div id="contentBar" class="progress-bar"></div></div>
-                </div>
-            </div>
-        </div>
+function show(d){
+  document.getElementById("results").classList.remove("hidden");
+  document.getElementById("overall").innerText=d.overall_score||0;
+  document.getElementById("grade").innerText=`SEO Grade ${d.grade||"D"}`;
+  document.getElementById("verdict").innerText=d.verdict||"Analysis completed.";
+  document.getElementById("onpage").innerText=`${d.on_page_score||0}/30`;
+  document.getElementById("technical").innerText=`${d.technical_score||0}/25`;
+  document.getElementById("performance").innerText=`${d.performance_score||0}/20`;
+  document.getElementById("content").innerText=`${d.content_score||0}/15`;
+  document.getElementById("metadata").innerText=`${d.metadata_score||0}/10`;
 
-        <div class="report-card">
-            <div class="section-heading">
-                <h2>Website Snapshot</h2>
-                <p>Key SEO signals extracted from the analyzed page.</p>
-            </div>
-            <div id="websiteDetails" class="detail-grid"></div>
-        </div>
+  const details=[
+    ["Analyzed URL",d.url],["Final URL",d.final_url],["Status Code",d.status_code],
+    ["Response Time",`${d.response_time_ms} ms`],["Page Size",`${d.page_size_kb} KB`],
+    ["Redirect Count",d.redirect_count],["Title",d.title],["Title Length",d.title_length],
+    ["Meta Description Length",d.meta_description_length],["H1",d.h1_count],["H2",d.h2_count],
+    ["H3",d.h3_count],["H4",d.h4_count],["H5",d.h5_count],["H6",d.h6_count],
+    ["Indexable",d.indexable],["Noindex",d.noindex],["Nofollow",d.nofollow],
+    ["Robots.txt",d.robots_txt],["Sitemap.xml",d.sitemap_xml],["Canonical",d.canonical_tag],
+    ["Open Graph",d.open_graph_tags],["Twitter Tags",d.twitter_tags],["Structured Data",d.structured_data],
+    ["Word Count",d.word_count],["Readability",d.readability?.readability_level]
+  ];
+  document.getElementById("details").innerHTML=details.map(i=>`<div class="item"><strong>${i[0]}</strong><span>${v(i[1])}</span></div>`).join("");
 
-        <div class="report-card">
-            <div class="section-heading">
-                <h2>SEO Check Matrix</h2>
-                <p>Pass/fail audit checks grouped by SEO category.</p>
-            </div>
-            <div id="checkMatrix" class="check-grid"></div>
-        </div>
+  document.getElementById("checks").innerHTML=(d.checks||[]).map(c=>`
+    <div class="check"><div class="icon ${c.passed?"pass":"fail"}">${c.passed?"✓":"!"}</div>
+    <div><strong>${c.name}</strong><p>${c.category} — ${c.detail}</p></div></div>`).join("");
 
-        <div class="report-card">
-            <div class="section-heading">
-                <h2>Smart Fix Suggestions</h2>
-                <p>Actionable recommendations generated from audit results.</p>
-            </div>
-            <ul id="suggestionsList" class="suggestion-list"></ul>
-        </div>
+  document.getElementById("suggestions").innerHTML=(d.suggestions||[]).map(s=>`<li>${s}</li>`).join("");
 
-    </section>
+  document.getElementById("keywords").innerHTML=(d.top_keywords||[]).map(k=>
+    `<div class="item"><strong>${k.keyword}</strong><span>${k.count} times • ${k.density}%</span></div>`
+  ).join("") || `<div class="item"><strong>No keywords found</strong><span>Not enough content</span></div>`;
 
-    <footer>
-        RankPulse SEO Analyzer • Python FastAPI + HTML CSS JavaScript • Developed by Kumari Vrishti
-    </footer>
+  window.scrollTo({top:document.getElementById("results").offsetTop-20,behavior:"smooth"});
+}
 
-</div>
-
-<script src="script.js"></script>
+function downloadReport(){
+  if(!latestReport){alert("No report available.");return;}
+  const blob=new Blob([JSON.stringify(latestReport,null,2)],{type:"application/json"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url;a.download="rankpulse-seo-report.json";a.click();
+  URL.revokeObjectURL(url);
+}
+</script>
 </body>
 </html>
